@@ -4,23 +4,31 @@ export const strict = false
 
 export const state = () => ({
     accessToken: null,
-    user: null
+    user: null,
+    isMobile: true,
+    sideMenuOn: false,
 })
 
 export const mutations = {
-    SET_ACCESS_TOKEN (state, accessToken) {
+    SET_ACCESS_TOKEN(state, accessToken) {
         state.accessToken = accessToken || null
         if (accessToken !== null) {
             setToken(accessToken)
         }
     },
-    SET_USER (state, user) {
+    SET_USER(state, user) {
         state.user = user || null
     },
-    SIGN_OUT (state) {
+    SIGN_OUT(state) {
         state.accessToken = null
         state.user = null
         signOut()
+    },
+    SET_IS_MOBILE(state, isMobile) {
+        state.isMobile = isMobile
+    },
+    SET_SIDE_MENU_STATUS(state, menuState) {
+        state.sideMenuOn = menuState
     }
 }
 
@@ -32,6 +40,8 @@ export const getters = {
 
 export const actions = {
     async nuxtServerInit({commit}, {req}) {
+        commit('SET_IS_MOBILE', this.$device.isMobile)
+
         if (!req.headers.cookie) return
         const jwtCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('jwt='))
         const accessToken = jwtCookie.split('=')[1]
@@ -97,5 +107,35 @@ export const actions = {
     },
     signOut ({ commit }) {
         commit('SIGN_OUT')
-    }
+    },
+    async resetPasswordEmail ({ commit }, params) {
+        try {
+            const user = await this.$axios.$post('/v1/resetPasswordEmail', params)
+            return {
+                status: true,
+                data: user
+            }
+        } catch (e) {
+            console.log(e)
+            return {
+                status: false,
+                data: e
+            }
+        }
+    },
+    async resetPassword ({ commit }, params) {
+        try {
+            const user = await this.$axios.$post('/v1/resetPassword', params)
+            return {
+                status: true,
+                data: user
+            }
+        } catch (e) {
+            console.log(e)
+            return {
+                status: false,
+                data: e
+            }
+        }
+    },
 }

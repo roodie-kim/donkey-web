@@ -1,34 +1,23 @@
 <template>
     <div>
-        <p>is logged in: {{ isLoggedIn }}</p>
-        <div v-if="isLoggedIn">
-            <p>user: {{ user.name }}</p>
-            <button @click="signOut">sign out</button>
-        </div>
-        <div v-if="!isLoggedIn">
-            <nuxt-link to="/auth/signup">sign up</nuxt-link>
-            <nuxt-link to="/auth/signin">sign in</nuxt-link>
-        </div>
-        <hr>
+        <navbar-mobile v-if="isMobile"/>
+        <navbar-desktop v-if="!isMobile"/>
     </div>
 </template>
 
 <script>
+import navbarMobile from '@/components/commons/nav-bar-mobile'
+import navbarDesktop from '@/components/commons/nav-bar-desktop'
 export default {
+    components: {
+        navbarMobile,
+        navbarDesktop
+    },
     computed: {
-        isLoggedIn () {
-            return this.$store.getters['isAuthenticated']
-        },
-        user () {
-            return this.$store.state.user
+        isMobile () {
+            return this.$store.state.isMobile
         }
     },
-    methods: {
-        signOut () {
-            this.$store.dispatch('signOut')
-            this.$router.push('/');
-        }
-    }
 }
 </script>
 

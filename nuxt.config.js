@@ -8,7 +8,7 @@ module.exports = {
     ** Headers of the page
     */
     head: {
-        title: pkg.name,
+        title: 'tv',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -31,12 +31,18 @@ module.exports = {
     ** Global CSS
     */
     css: [
+        { src: '~/assets/css/tv-bulma.scss', lang: 'scss'},
+        'quill/dist/quill.snow.css',
+        'quill/dist/quill.bubble.css',
+        'quill/dist/quill.core.css'
     ],
 
     /*
     ** Plugins to load before mounting the App
     */
     plugins: [
+        { src: '~plugins/moment.js', ssr: true },
+        { src: '~plugins/vee-validate.js', ssr: true},
     ],
 
     /*
@@ -44,13 +50,20 @@ module.exports = {
     */
     modules: [
         '@nuxtjs/axios',
-        '@nuxtjs/dotenv'
+        '@nuxtjs/dotenv',
+        'nuxt-device-detect',
+        ['nuxt-buefy', { css: false, materialDesignIcons: false }],
     ],
     /*
     ** Axios module configuration
     */
     axios: {
         baseURL: process.env.TV_API
+    },
+
+    env: {
+        AWS_URL: process.env.AWS_URL,
+        ENVIRONMENT: process.env.ENVIRONMENT
     },
 
     /*
