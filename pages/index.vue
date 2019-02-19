@@ -1,147 +1,147 @@
 <template>
     <div>
-        <div class="top-index">
-            <h4 class="title is-4 has-text-weight-semibold top-index-title">신규 게시판</h4>
-            <hr class="hr-body">
-            <div class="category boards-wrapper  has-background-white-bis">
-                <div class="request-add-board-div">
-                    <div class="field is-grouped">
-                        <p class="control is-expanded request-add-board-input">
-                            <input
-                                v-model="requestBoard.name"
-                                class="input"
-                                type="text"
-                                placeholder="게시판 추가 요청">
-                        </p>
-                        <p class="control">
-                            <button
-                                class="button is-primary"
-                                @click="requestAddBoard()">
-                                요청하기
-                            </button>
-                        </p>
-                    </div>
-                    <p class="info-text">※ 원하는 게시판이 없다면 요청해주세요. 24시간 이내에 검토 후 추가됩니다.</p>
-                </div>
-                <nuxt-link
-                    v-for="(board, index) in recentBoards"
-                    :key="index"
-                    :to="boardUrl(board)"
-                    class="board-name">
-                    {{ board.name }}
-                </nuxt-link>
-            </div>
-        </div>
+        <!--데스크탑-->
         <div
-            v-for="(top, index) in topIndex"
-            :key="index"
-            class="top-index">
-            <h4 class="title is-4 has-text-weight-semibold top-index-title">{{ top.name }}</h4>
-            <hr class="hr-body">
-            <div
-                v-for="(categories, index) in top.board_categories"
-                :key="index"
-                class="category">
-                <h4 class="subtitle is-5 has-text-weight-semibold category-title">{{ categories.name }}</h4>
-                <div class="boards-wrapper">
-                    <nuxt-link
-                        v-for="(board, index) in categories.boards"
-                        :key="index"
-                        :to="boardUrl(board)"
-                        class="board-name">
-                        {{ board.name }}
-                    </nuxt-link>
-                </div>
+            v-if="!isMobile"
+            class="outter-padding">
+            <div class="flex-box-start">
+                <h4 class="is-title is-size-4 has-text-weight-semibold board-title">
+                    자유게시판
+                </h4>
+                <p
+                    class="is-italic hover"
+                    @click="unsetRulesChecked()"><u>규칙보기</u></p>
             </div>
+            <basic-rules v-if="!rulesChecked"/>
+            <posts-list :posts="posts"/>
+            <div class="flex-box-end">
+                <button
+                    class="button is-primary general-button"
+                    @click="goToCreatePage()">
+                    <span class="font-awesome-margin-right"><i class="fas fa-pen"/></span>글쓰기
+                </button>
+            </div>
+            <paginationDiv/>
         </div>
 
+        <!--모바일-->
+        <div
+            v-if="isMobile"
+            class="outer-padding-mobile">
+            <div
+                class="flex-box-start"
+                style="padding-left: 5px;">
+                <h4 class="is-title is-size-4 has-text-weight-semibold board-title">자유게시판</h4>
+                <p
+                    class="is-italic hover"
+                    @click="unsetRulesChecked()"><u>규칙보기</u></p>
+            </div>
+            <basic-rules v-if="!rulesChecked"/>
+            <posts-list :posts="posts"/>
+            <div class="flex-box-end">
+                <button
+                    class="button is-primary general-button"
+                    @click="goToCreatePage()">
+                    <span class="font-awesome-margin-right"><i class="fas fa-pen"/></span>글쓰기
+                </button>
+            </div>
+            <paginationDiv/>
+        </div>
     </div>
 </template>
 
 <script>
+import postsList from '@/components/posts/list'
+import paginationDiv from '@/components/posts/pagination'
+import basicRules from '../components/announcements/basic-rules'
 export default {
     async asyncData({ app, store, params, query, error }) {
-        const getRecentBoardsResponse = await store.dispatch('boards/getRecentBoards')
-        store.commit('boards/SET_RECENT_BOARDS', getRecentBoardsResponse.data)
-
-        const getBoardsResponse = await store.dispatch('boards/getBoards')
-        store.commit('boards/SET_BOARDS', getBoardsResponse.data)
-    },
-    data() {
-        return {
-            requestBoard: {
-                name: ''
-            }
+        if (query.page == null) {
+            query.page = 1
+        } else {
+            query.page = query.page * 1
         }
+
+        store.commit('posts/SET_PAGE', query.page)
+
+        const getPostsResponse = await store.dispatch('posts/getPosts', query)
+        store.commit('posts/SET_LIST', getPostsResponse.data)
+    },
+    watchQuery: ['page'],
+    components: {
+        postsList,
+        paginationDiv,
+        basicRules,
     },
     computed: {
-        topIndex() {
-            return this.$store.state.boards.list
+        posts() {
+            return this.$store.getters['posts/list']
         },
-        recentBoards() {
-            return this.$store.state.boards.recentList
+        isLoggedIn() {
+            return this.$store.getters['isAuthenticated']
+        },
+        isMobile() {
+            return this.$store.getters['isMobile']
+        },
+        rulesChecked() {
+            return this.$store.getters['rulesChecked']
         }
     },
-    methods: {
-        boardUrl(board) {
-            return '/' + board.name
-        },
-        async requestAddBoard() {
-            const response = await this.$store.dispatch('boards/requestAddBoard', this.requestBoard)
-            if (response.status) {
-                alert('요청되었습니다. 24시간 내에 결과를 알려드리겠습니다.')
+    mounted() {
+        let rulesChecked = window.localStorage.getItem('rulesChecked')
+        let value
+        if (rulesChecked == null) {
+            value = false
+        } else {
+            if (rulesChecked == 'true') {
+                value = true
             } else {
-                alert('문제가 생겼습니다. 나중에 다시 시도해주세요.')
+                value = false
             }
-            this.requestBoard.name = ''
+        }
+        this.$store.commit('SET_RULES_CHECKED', value)
+    },
+    methods: {
+        goToCreatePage() {
+            if (!this.isLoggedIn) {
+                alert('로그인이 필요합니다.')
+                return
+            }
+            this.$router.push('/create')
+        },
+        unsetRulesChecked() {
+            this.$store.commit('SET_RULES_CHECKED', false)
         }
     }
 }
 </script>
 
-<style>
-.request-add-board-div {
-    width: 100%;
+<style scoped>
+.outter-padding {
+    padding: 40px;
 }
-.request-add-board-input {
-    max-width: 300px;
+.outer-padding-mobile {
+    padding-top: 15px;
 }
-.info-text {
-    color: red;
-    margin-top: -5px;
-    margin-bottom: 10px;
+.font-awesome-margin-right {
+    margin-right: 10px;
 }
-.hr-body {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-top: 2px solid #7957d5;
+.general-button {
+    width: 100px;
 }
-.top-index {
-    margin-bottom: 20px;
-}
-.top-index-title {
-    margin-bottom: 0px !important;
-}
-.category {
-    padding: 5px;
-    border: 1px solid #F5F5F5;
-    border-radius: 3px;
-    margin-bottom: 10px;
-}
-.category-title {
-    margin-bottom: 5px !important;
-}
-.boards-wrapper {
+.flex-box-start {
     display: flex;
-    flex-wrap: wrap;
     justify-content: flex-start;
+    align-items: center;
 }
-.board-name {
-    min-width: 150px;
-    height: 25px;
-    width: 20%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.flex-box-end {
+    display: flex;
+    justify-content: flex-end;
+}
+.board-title {
+    margin-right: 10px;
+}
+.hover {
+    cursor: pointer;
 }
 </style>

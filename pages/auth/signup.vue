@@ -35,13 +35,13 @@
                 class="help is-danger">{{ errors.first('비밀번호') }}</span>
 
             <input
-                v-validate="'required|max:15|min:4|regex:^[a-zA-Z0-9ㄱ-ㅎ가-힣-_]*$'"
+                v-validate="'required|max:15|min:3|regex:^[a-zA-Z0-9ㄱ-ㅎ가-힣-_]*$'"
                 :class="{'input': true, 'is-danger': errors.has('닉네임') }"
                 v-model="user.name"
                 class="input seperated"
                 type="text"
                 name="닉네임"
-                placeholder="닉네임 (최소 4자, 최대 15자, 영어, 한글, 숫자와 -, _ 를 사용할 수 있습니다.">
+                placeholder="닉네임 (최소 3자, 최대 15자, 영어, 한글, 숫자와 -, _ 를 사용할 수 있습니다.">
             <i
                 v-show="errors.has('닉네임')"
                 class="fa fa-warning"/>

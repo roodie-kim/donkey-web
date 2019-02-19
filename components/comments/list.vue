@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="comments-list">
         <p class="has-text-weight-bold">댓글: <span class="has-text-danger">{{ commentsCount }}</span>개</p>
         <comment-form/>
         <div
@@ -12,7 +12,7 @@
         <pagination-div v-if="!lessThanOnePage"/>
         <hr
             v-if="!noComments"
-            class="hr-body">
+            class="hr-body null-comment-margin">
     </div>
 </template>
 
@@ -28,7 +28,7 @@ export default {
     },
     computed: {
         comments () {
-            return this.$store.state.comments.list
+            return this.$store.getters['comments/list']
         },
         noComments() {
             return this.commentsCount === 0 ? true : false
@@ -37,13 +37,13 @@ export default {
             return this.commentsCount <= 50 ? true : false
         },
         commentsPage () {
-            return this.$store.state.comments.page
+            return this.$store.getters['comments/page']
         },
         post () {
-            return this.$store.state.posts.info
+            return this.$store.getters['posts/info']
         },
         commentsCount () {
-            return this.$store.state.comments.count
+            return this.$store.getters['comments/count']
         }
     },
     async mounted () {
@@ -57,9 +57,14 @@ export default {
 </script>
 
 <style scoped>
+.comments-list {
+    margin-top: 30px;
+}
 .hr-body {
-    margin-top: 10px;
     margin-bottom: 10px;
-    border-top: 2px solid #7957d5;
+    border-top: 2px solid #363636;
+}
+.null-comment-margin {
+    margin-top: 0px;
 }
 </style>

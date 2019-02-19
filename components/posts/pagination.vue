@@ -21,19 +21,19 @@ import pagination from '@/utils/pagination.js'
 export default {
     computed: {
         pages () {
-            const pages = pagination.getPages(this.postsCount, this.currentPage, 50)
+            const pages = pagination.getPages(this.postsCount, this.currentPage, 30)
             return pages
         },
         postsCount () {
-            return this.$store.state.posts.postsCount
+            return this.$store.getters['posts/count']
         },
         currentPage () {
-            return this.$store.state.posts.page
+            return this.$store.getters['posts/page']
         }
     },
     methods: {
         makeUrl (page) {
-            const url = '/' + this.$route.params.board + '?page=' + page
+            const url = '/?page=' + page
             return url
         },
         scrollTop () {

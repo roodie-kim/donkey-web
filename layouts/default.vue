@@ -4,8 +4,9 @@
             <nav-bar/>
         </div>
         <div class="container is-widescreen">
-            <nuxt :class="{ main: !isMobile }"/>
+            <nuxt/>
         </div>
+
         <button
             v-if="isMobile"
             class="main-fab button is-primary"
@@ -33,7 +34,7 @@ export default {
         },
         sideMenuOn() {
             return this.$store.state.sideMenuOn
-        }
+        },
     },
     methods: {
         openSideMenu() {
@@ -60,9 +61,6 @@ html {
 *:after {
     box-sizing: border-box;
     margin: 0;
-}
-.main {
-    padding-top: 30px;
 }
 .main-fab {
     background-color: #FF2434;

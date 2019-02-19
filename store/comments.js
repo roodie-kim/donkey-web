@@ -8,26 +8,26 @@ export const state = () => ({
 })
 
 export const mutations = {
-    CHANGE_PAGE_NUMBER (state, pageNumber) {
+    CHANGE_PAGE_NUMBER(state, pageNumber) {
         state.page = pageNumber
     },
-    SET_LIST (state, comments) {
+    SET_LIST(state, comments) {
         state.list = comments.comments
         state.count = comments.count
     },
-    SET_INFO (state, comment) {
+    SET_INFO(state, comment) {
         state.info = comment
     },
-    SET_PAGE (state, page) {
+    SET_PAGE(state, page) {
         state.page = page
     },
-    SET_COUNT (state, count) {
+    SET_COUNT(state, count) {
         state.count = count
     },
-    PUSH_COMMENT (state, comment) {
+    PUSH_COMMENT(state, comment) {
         state.list.push(comment)
     },
-    DELETE_COMMENT (state, commentId) {
+    DELETE_COMMENT(state, commentId) {
         const index = state.list.findIndex(
             comment => comment.id === commentId
         )
@@ -36,11 +36,19 @@ export const mutations = {
 }
 
 export const getters = {
-
+    list(state) {
+        return state.list
+    },
+    count(state) {
+        return state.count
+    },
+    page(state) {
+        return state.page
+    }
 }
 
 export const actions = {
-    async getComments ({ commit, rootState }, conditions) {
+    async getComments({ commit, rootState }, conditions) {
         const accessToken = rootState.accessToken
         this.$axios.setToken(accessToken, 'Bearer')
         try {
@@ -62,7 +70,7 @@ export const actions = {
             }
         }
     },
-    async createComment ({ commit, rootState }, conditions) {
+    async createComment({ commit, rootState }, conditions) {
         const accessToken = rootState.accessToken
         try {
             this.$axios.setToken(accessToken, 'Bearer')
@@ -82,7 +90,7 @@ export const actions = {
             }
         }
     },
-    async editComment ({ commit, rootState }, data) {
+    async editComment({ commit, rootState }, data) {
         const accessToken = rootState.accessToken
         let newComment = {}
         newComment.body = data.body
@@ -104,7 +112,7 @@ export const actions = {
             }
         }
     },
-    async deleteComment ({ commit, rootState }, commentId) {
+    async deleteComment({ commit, rootState }, commentId) {
         const accessToken = rootState.accessToken
         try {
             this.$axios.setToken(accessToken, 'Bearer')

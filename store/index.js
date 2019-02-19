@@ -7,6 +7,7 @@ export const state = () => ({
     user: null,
     isMobile: true,
     sideMenuOn: false,
+    rulesChecked: true,
 })
 
 export const mutations = {
@@ -29,12 +30,25 @@ export const mutations = {
     },
     SET_SIDE_MENU_STATUS(state, menuState) {
         state.sideMenuOn = menuState
+    },
+    SET_RULES_CHECKED(state, checked) {
+        state.rulesChecked = checked
+        window.localStorage.setItem('rulesChecked', checked)
     }
 }
 
 export const getters = {
-    isAuthenticated (state) {
+    user(state) {
+        return state.user
+    },
+    isAuthenticated(state) {
         return !!state.accessToken && !!state.user
+    },
+    isMobile(state) {
+        return state.isMobile
+    },
+    rulesChecked(state) {
+        return state.rulesChecked
     }
 }
 

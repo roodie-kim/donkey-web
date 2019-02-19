@@ -1,5 +1,7 @@
 <template>
-    <section class="container">
+    <section
+        :class="{ 'desktop-padding': !isMobile, 'mobile-padding': isMobile }"
+        class="container">
         <form
             @submit.prevent="submit">
             <input
@@ -7,7 +9,7 @@
                 type="string"
                 name="title"
                 placeholder="제목"
-                class="create-post-title is-size-6">
+                class="input create-post-title is-size-6">
             <div
                 v-quill:myQuillEditor="editorOption"
                 v-model="post.body"
@@ -33,6 +35,11 @@ export default {
             editorOption: null
         }
     },
+    computed: {
+        isMobile() {
+            return this.$store.getters['isMobile']
+        }
+    },
     beforeMount() {
         const VueQuillEditor = require('vue-quill-editor/dist/ssr');
         const Quill = require('quill');
@@ -44,10 +51,8 @@ export default {
                     container: [
                         ['bold', 'italic', 'underline', 'strike'],
                         [{ size: ['small', false, 'large', 'huge'] }],
-                        [{ header: [1, 2, 3, 4, 5, 6, false] }],
                         [{ color: [] }, { background: [] }],
                         [{ align: [] }],
-                        ['blockquote', 'code-block'],
                         ['link', 'image', 'video']
                     ],
                     handlers: {
@@ -62,14 +67,13 @@ export default {
                     action: 'http://127.0.0.1:8000/v1/images',
                     response: (res) => {
                         const imageUrl = process.env.AWS_URL + '/' + process.env.ENVIRONMENT + '/'
-                        + this.$store.state.user.id + '/' + res.new_name + '.' + res.ext
+                            + this.$store.state.user.id + '/' + res.new_name + '.' + res.ext
                         return imageUrl
                     },
                     headers: (xhr) => {
                         xhr.setRequestHeader('Authorization','Bearer ' + this.$store.state.accessToken)
                     },
                     error: () => {
-
                         alert('파일이 업로드되지 않았습니다.')
                     },
                 },
@@ -77,7 +81,6 @@ export default {
         }
 
         if (!Quill.imports['modules/ImageExtend']) {
-            // Register only if not exists - 仅在不存在时注册
             Quill.register('modules/ImageExtend', ImageExtend);
         }
         Vue.use(VueQuillEditor)
@@ -94,7 +97,7 @@ export default {
             }
             const response = await this.$store.dispatch('posts/createPost', this.post)
             if (response.status) {
-                this.$router.push('/' + this.$route.params.board + '/' + response.data.id)
+                this.$router.push('/' + response.data.id)
             } else {
                 const error = response.data.response
                 if (error.status === 400) {
@@ -115,8 +118,6 @@ export default {
                 })
             })
 
-            console.log(string)
-
             if (string === '') {
                 return true
             } else {
@@ -131,6 +132,12 @@ export default {
 .container {
     width: 100%;
     margin: 0 auto;
+}
+.desktop-padding {
+    padding: 40px;
+}
+.mobile-padding {
+    padding-top: 20px;
 }
 .quill-editor {
     max-height: 600px;

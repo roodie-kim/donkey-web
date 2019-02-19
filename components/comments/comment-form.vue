@@ -41,13 +41,13 @@ export default {
     },
     computed: {
         post () {
-            return this.$store.state.posts.info
+            return this.$store.getters['posts/info']
         },
         commentsCount () {
-            return this.$store.state.comments.count
+            return this.$store.getters['comments/count']
         },
         commentsPage () {
-            return this.$store.state.comments.page
+            return this.$store.getters['comments/page']
         }
     },
     methods: {
@@ -77,10 +77,10 @@ export default {
 <style scoped>
 .comment-form {
     margin-top: 3px;
-    border-top: 2px solid #7957d5;
-    border-bottom: 2px solid #7957d5;
+    border-top: 2px solid #363636;
+    border-bottom: 2px solid #363636;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 .comment-input {
     width: 100%;
