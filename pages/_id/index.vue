@@ -15,12 +15,14 @@
 
         <div class="votes-buttons">
             <button
+                :disabled="votesButtonDisabled"
                 :class="{ 'is-outlined': !upVoted}"
                 class="button is-primary is-medium vote-button"
                 @click="vote('up')">
                 <span class="votes-count">{{ post.votes.up_count }}</span><i class="far fa-hand-point-up"/>
             </button>
             <button
+                :disabled="votesButtonDisabled"
                 :class="{ 'is-outlined': !downVoted}"
                 class="button is-danger is-medium vote-button"
                 @click="vote('down')">
@@ -76,6 +78,11 @@ export default {
     },
     components: {
         commentsList,
+    },
+    data() {
+        return {
+            votesButtonDisabled: false,
+        }
     },
     computed: {
         isMobile() {
@@ -137,12 +144,14 @@ export default {
                     alert('이미 ' + krType +'한 글입니다.')
                     return
                 }
+                this.votesButtonDisabled = true
                 const param = {
                     'post_id': this.post.id,
                     'type': voteType
                 }
                 const response = await this.$store.dispatch('posts/vote', param)
                 if (response.status) {
+                    this.votesButtonDisabled = false
                     this.$store.commit('posts/SET_VOTE', voteType)
                 } else {
                     alert('서버에 문제가 발생했습니다. 운영자에게 연락하거나 나중에 다시 시도해주세요.')
