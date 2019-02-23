@@ -104,10 +104,14 @@ export default {
     methods: {
         goToCreatePage() {
             if (!this.isLoggedIn) {
-                alert('로그인이 필요합니다.')
-                return
+                if (confirm("로그인이 필요한 기능입니다. 지금 로그인 하시겠습니까?")) {
+                    this.$router.push('/auth/signin')
+                } else {
+                    return
+                }
+            } else {
+                this.$router.push('/create')
             }
-            this.$router.push('/create')
         },
         unsetRulesChecked() {
             this.$store.commit('SET_RULES_CHECKED', false)

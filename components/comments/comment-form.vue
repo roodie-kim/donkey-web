@@ -1,6 +1,6 @@
 <template>
     <div class="comment-form">
-        <form @submit.prevent="submit" >
+        <form @submit.prevent="loginCheck" >
             <div>
                 <div>
                     <textarea
@@ -51,7 +51,18 @@ export default {
         }
     },
     methods: {
-        async submit () {
+        async loginCheck () {
+            if (!this.isLoggedIn) {
+                if (confirm("로그인이 필요한 기능입니다. 지금 로그인 하시겠습니까?")) {
+                    this.$router.push('/auth/signin')
+                } else {
+                    this.submit()
+                }
+            } else {
+                this.$router.push('/create')
+            }
+        },
+        async submit() {
             // create comment
             const data = {}
             data.body = this.comment.body

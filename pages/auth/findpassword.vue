@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card auth-form">
-            <h3 class="header subtitle is-4 has-text-weight-semibold">회원 가입</h3>
+            <h3 class="header subtitle is-4 has-text-weight-semibold">비밀번호찾기</h3>
             <form
                 novalidate
                 @submit.prevent="validateBeforeSubmit">

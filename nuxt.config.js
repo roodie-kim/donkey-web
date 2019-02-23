@@ -8,11 +8,12 @@ module.exports = {
     ** Headers of the page
     */
     head: {
-        title: 'tv',
+        title: '손가락 놀이터 | 글이 순삭되는 게시판',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: pkg.description }
+            { hid: 'description', name: 'description', content: '모든 글이 순삭되는 게시판. 내 과거의 글이 웹세상을 표류하는 것이 싫은 사람들을 위한곳.' },
+            { hid: 'image', name: 'image', content: 'https://s3.ap-northeast-2.amazonaws.com/project-donkey/resources/logos/SEO_Image.png' }
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }

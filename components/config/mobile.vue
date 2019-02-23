@@ -127,7 +127,6 @@ if (process.browser) {
     VeeValidate = require('vee-validate')
 }
 export default {
-    middleware: 'signedIn',
     data () {
         return {
             nicknameForm: {

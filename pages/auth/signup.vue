@@ -57,7 +57,7 @@
                 </button>
             </div>
         </form>
-
+        <p>이미 가입하셨나요? <span><nuxt-link to="/auth/signin">로그인하기</nuxt-link></span></p>
     </div>
 </template>
 

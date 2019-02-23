@@ -39,7 +39,7 @@
                     type="submit">로그인</button>
             </div>
         </form>
-
+        <p>아직 가입하지 않으셨나요? <span><nuxt-link to="/auth/signup">회원가입하기</nuxt-link></span></p>
         <p>비밀번호를 잊어버리셨나요? <span><nuxt-link to="/auth/findpassword">비밀번호 찾기</nuxt-link></span></p>
     </div>
 </template>

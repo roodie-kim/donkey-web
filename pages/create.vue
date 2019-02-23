@@ -26,6 +26,7 @@
 <script>
 import Vue from 'vue'
 export default {
+    middleware: 'authenticated',
     data () {
         return {
             post: {

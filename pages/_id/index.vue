@@ -109,6 +109,9 @@ export default {
             } else {
                 return false
             }
+        },
+        isLoggedIn() {
+            return this.$store.getters['isAuthenticated']
         }
     },
     methods: {
@@ -119,23 +122,31 @@ export default {
             }
         },
         async vote(voteType) {
-            if (this.post.has_voted) {
-                let krType = '추천'
-                if (this.post.my_vote_type === 'down') {
-                    krType = '비추천'
+            if (!this.isLoggedIn) {
+                if (confirm("로그인이 필요한 기능입니다. 지금 로그인 하시겠습니까?")) {
+                    this.$router.push('/auth/signin')
+                } else {
+                    return
                 }
-                alert('이미 ' + krType +'한 글입니다.')
-                return
-            }
-            const param = {
-                'post_id': this.post.id,
-                'type': voteType
-            }
-            const response = await this.$store.dispatch('posts/vote', param)
-            if (response.status) {
-                this.$store.commit('posts/SET_VOTE', voteType)
             } else {
-                alert('서버에 문제가 발생했습니다. 운영자에게 연락하거나 나중에 다시 시도해주세요.')
+                if (this.post.has_voted) {
+                    let krType = '추천'
+                    if (this.post.my_vote_type === 'down') {
+                        krType = '비추천'
+                    }
+                    alert('이미 ' + krType +'한 글입니다.')
+                    return
+                }
+                const param = {
+                    'post_id': this.post.id,
+                    'type': voteType
+                }
+                const response = await this.$store.dispatch('posts/vote', param)
+                if (response.status) {
+                    this.$store.commit('posts/SET_VOTE', voteType)
+                } else {
+                    alert('서버에 문제가 발생했습니다. 운영자에게 연락하거나 나중에 다시 시도해주세요.')
+                }
             }
         }
     }
