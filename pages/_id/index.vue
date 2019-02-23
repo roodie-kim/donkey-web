@@ -68,13 +68,32 @@ import commentsList from '@/components/comments/list'
 export default {
     async asyncData({ app, store, params, query, error, redirect }) {
         const postResponse = await store.dispatch('posts/getPost', params.id)
-        if(!postResponse.status) {
-            return redirect('/')
-        }
-        store.commit('posts/SET_INFO', postResponse.data)
 
-        store.commit('comments/SET_PAGE', 1)
-        store.commit('comments/SET_COUNT', postResponse.data.comments_count)
+        if(postResponse.status) {
+            store.commit('posts/SET_INFO', postResponse.data)
+
+            store.commit('comments/SET_PAGE', 1)
+            store.commit('comments/SET_COUNT', postResponse.data.comments_count)
+        } else {
+            let errorResponse = postResponse.data.response
+            if (errorResponse.status === 404) {
+                if (process.browser) {
+                    alert('시간이 지난 글인가봐요.')
+                }
+                return redirect('/')
+            } else if (errorResponse.status === 429) {
+                error({ statusCode: 429, message: '많은 사람들이 접속을 시도중이네요! 반갑습니다.' })
+                if (process.browser) {
+                    alert('잠시 후 다시 시도해 주세요.')
+                }
+            } else {
+                error({ statusCode: 500, message: '서버에 뭔가 문제가 생겼네요.' })
+                if (process.browser) {
+                    alert('서버에 뭔가 문제가 생겼네요.')
+                }
+            }
+        }
+
     },
     components: {
         commentsList,

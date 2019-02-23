@@ -65,7 +65,17 @@ export default {
         store.commit('posts/SET_PAGE', query.page)
 
         const getPostsResponse = await store.dispatch('posts/getPosts', query)
-        store.commit('posts/SET_LIST', getPostsResponse.data)
+        if (getPostsResponse.status) {
+            store.commit('posts/SET_LIST', getPostsResponse.data)
+        } else {
+            let errorResponse = getPostsResponse.data.response
+            if (errorResponse.status === 429) {
+                error({ statusCode: 429, message: '많은 사람들이 접속을 시도중이네요! 반갑습니다.' })
+            } else {
+                error({ statusCode: 500, message: '서버에 뭔가 문제가 생겼네요.' })
+            }
+        }
+
     },
     watchQuery: ['page'],
     components: {
