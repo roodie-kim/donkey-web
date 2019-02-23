@@ -12,6 +12,7 @@
                 </div>
                 <div class="justify-right">
                     <button
+                        :disabled="commentButtonDisabled"
                         type="submit"
                         class="button is-primary submit-buttom">
                         완료
@@ -36,7 +37,8 @@ export default {
         return {
             comment: {
                 body: ''
-            }
+            },
+            commentButtonDisabled: false,
         }
     },
     computed: {
@@ -71,10 +73,12 @@ export default {
             data.body = this.comment.body
             data.post_id = this.post.id
             data.comment_id = this.relatedComment
+            this.commentButtonDisabled = true
             const response = await this.$store.dispatch('comments/createComment', data)
 
             // if comment is created, move to comment page 1 of comments and empty comment-form
             if (response.status) {
+                this.commentButtonDisabled = false
                 this.$store.commit('comments/SET_PAGE', 1)
                 const conditions = {}
                 conditions.post_id = this.post.id

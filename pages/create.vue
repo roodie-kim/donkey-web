@@ -16,6 +16,7 @@
                 class="quill-editor"/>
             <div>
                 <button
+                    :disabled="postButtonDisabled"
                     class="button is-primary submit-button"
                     type="submit">작성하기</button>
             </div>
@@ -33,7 +34,8 @@ export default {
                 title: '',
                 body: '',
             },
-            editorOption: null
+            editorOption: null,
+            postButtonDisabled: false,
         }
     },
     computed: {
@@ -96,6 +98,7 @@ export default {
                 alert('본문을 입력해 주세요.')
                 return
             }
+            this.postButtonDisabled = true
             const response = await this.$store.dispatch('posts/createPost', this.post)
             if (response.status) {
                 this.$router.push('/' + response.data.id)
