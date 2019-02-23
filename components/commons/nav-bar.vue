@@ -8,7 +8,7 @@
                 class="navbar-item"
                 to="/">
                 <img
-                    src="https://bulma.io/images/bulma-logo-white.png"
+                    src="https://s3.ap-northeast-2.amazonaws.com/project-donkey/resources/logos/logo-long.png"
                     width="112"
                     height="28">
             </nuxt-link>
