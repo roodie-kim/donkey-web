@@ -59,10 +59,10 @@ export default {
                 if (confirm("로그인이 필요한 기능입니다. 지금 로그인 하시겠습니까?")) {
                     this.$router.push('/auth/signin')
                 } else {
-                    this.submit()
+                    return
                 }
             } else {
-                this.$router.push('/create')
+                this.submit()
             }
         },
         async submit() {
