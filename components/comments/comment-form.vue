@@ -48,7 +48,10 @@ export default {
         },
         commentsPage () {
             return this.$store.getters['comments/page']
-        }
+        },
+        isLoggedIn() {
+            return this.$store.getters['isAuthenticated']
+        },
     },
     methods: {
         async loginCheck () {
