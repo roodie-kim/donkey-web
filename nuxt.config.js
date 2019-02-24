@@ -65,11 +65,6 @@ module.exports = {
         baseURL: process.env.TV_API
     },
 
-    env: {
-        AWS_URL: process.env.AWS_URL,
-        ENVIRONMENT: process.env.ENVIRONMENT
-    },
-
     /*
     ** Build configuration
     */
@@ -88,5 +83,6 @@ module.exports = {
                 })
             }
         }
-    }
+    },
+    dev: (process.env.NODE_ENV !== 'production')
 }
