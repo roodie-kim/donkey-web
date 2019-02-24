@@ -53,7 +53,7 @@ module.exports = {
         '@nuxtjs/axios',
         '@nuxtjs/dotenv',
         ['@nuxtjs/google-analytics', {
-            id: GA_ID='UA-135088360-1'
+            id: process.env.GA_ID || ''
         }],
         'nuxt-device-detect',
         ['nuxt-buefy', { css: false, materialDesignIcons: false }],
