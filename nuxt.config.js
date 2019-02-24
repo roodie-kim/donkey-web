@@ -8,7 +8,7 @@ module.exports = {
     ** Headers of the page
     */
     head: {
-        title: '손가락 놀이터 | 글이 순삭되는 게시판',
+        title: '손가락 놀이터 | 글이 순삭되는 손놀 게시판',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -52,6 +52,9 @@ module.exports = {
     modules: [
         '@nuxtjs/axios',
         '@nuxtjs/dotenv',
+        ['@nuxtjs/google-analytics', {
+            id: process.env.GA_ID || ''
+        }],
         'nuxt-device-detect',
         ['nuxt-buefy', { css: false, materialDesignIcons: false }],
     ],
