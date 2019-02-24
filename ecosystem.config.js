@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: 'index-web',
+            name: 'sonnol',
             script: './server/index.js',
             // watch: 파일이 변경되면 서버가 자동으로 재시작
             watch: false,
