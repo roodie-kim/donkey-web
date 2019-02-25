@@ -82,6 +82,10 @@ module.exports = {
         baseURL: process.env.TV_API
     },
 
+    env: {
+        ENVIRONMENT: process.env.ENVIRONMENT
+    },
+
     /*
     ** Build configuration
     */
