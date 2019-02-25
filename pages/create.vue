@@ -41,7 +41,7 @@ export default {
     computed: {
         isMobile() {
             return this.$store.getters['isMobile']
-        }
+        },
     },
     beforeMount() {
         const VueQuillEditor = require('vue-quill-editor/dist/ssr');
@@ -70,7 +70,7 @@ export default {
                     action: process.env.TV_API + '/v1/images',
                     response: (res) => {
                         const imageUrl = process.env.AWS_URL + '/' + process.env.ENVIRONMENT + '/'
-                            + this.$store.state.user.id + '/' + res.new_name + '.' + res.ext
+                            + res.user_id + '/' + res.new_name + '.' + res.ext
                         return imageUrl
                     },
                     headers: (xhr) => {

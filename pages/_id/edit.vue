@@ -57,10 +57,10 @@ export default {
                 ImageExtend: {
                     loading: true,
                     name: 'image',
-                    action: 'http://127.0.0.1:8000/v1/images',
+                    action: process.env.TV_API + '/v1/images',
                     response: (res) => {
                         const imageUrl = process.env.AWS_URL + '/' + process.env.ENVIRONMENT + '/'
-                            + this.$store.state.user.id + '/' + res.new_name + '.' + res.ext
+                            + res.user_id + '/' + res.new_name + '.' + res.ext
                         return imageUrl
                     },
                     headers: (xhr) => {
