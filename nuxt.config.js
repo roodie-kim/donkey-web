@@ -13,7 +13,8 @@ module.exports = {
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
             { hid: 'description', name: 'description', content: '모든 글이 순삭되는 게시판. 내 과거의 글이 웹세상을 표류하는 것이 싫은 사람들을 위한곳.' },
-            { hid: 'image', name: 'image', content: 'https://s3.ap-northeast-2.amazonaws.com/project-donkey/resources/logos/SEO_Image.png' }
+            { hid: 'image', name: 'image', content: 'https://s3.ap-northeast-2.amazonaws.com/project-donkey/resources/logos/SEO_Image.png' },
+            { name: 'google-site-verification', content: 'BHKJb9l9HT3yLNDLG93kgCbjI4_OcZGjyxt4gBVNxMU'}
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
