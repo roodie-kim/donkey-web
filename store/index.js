@@ -58,6 +58,7 @@ export const actions = {
 
         if (!req.headers.cookie) return
         const jwtCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('jwt='))
+        if (!jwtCookie) return null
         const accessToken = jwtCookie.split('=')[1]
 
         try {
