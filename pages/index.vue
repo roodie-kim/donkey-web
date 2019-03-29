@@ -1,52 +1,25 @@
 <template>
-    <div>
-        <!--데스크탑-->
-        <div
-            v-if="!isMobile"
-            class="outter-padding">
-            <div class="flex-box-start">
-                <h4 class="is-title is-size-4 has-text-weight-semibold board-title">
-                    자유게시판
-                </h4>
-                <p
-                    class="is-italic hover"
-                    @click="unsetRulesChecked()"><u>규칙보기</u></p>
-            </div>
-            <basic-rules v-if="!rulesChecked"/>
-            <posts-list :posts="posts"/>
-            <div class="flex-box-end">
-                <button
-                    class="button is-primary general-button"
-                    @click="goToCreatePage()">
-                    <span class="font-awesome-margin-right"><i class="fas fa-pen"/></span>글쓰기
-                </button>
-            </div>
-            <paginationDiv/>
+    <!-- 데스크탑과 모바일 -->
+    <div
+        :class="isMobile?'outer-padding-mobile':'outter-padding'">
+        <div class="flex-box-start">
+            <h4 class="is-title is-size-4 has-text-weight-semibold board-title">
+                자유게시판
+            </h4>
+            <p
+                class="is-italic hover"
+                @click="unsetRulesChecked()"><u>규칙보기</u></p>
         </div>
-
-        <!--모바일-->
-        <div
-            v-if="isMobile"
-            class="outer-padding-mobile">
-            <div
-                class="flex-box-start"
-                style="padding-left: 5px;">
-                <h4 class="is-title is-size-4 has-text-weight-semibold board-title">자유게시판</h4>
-                <p
-                    class="is-italic hover"
-                    @click="unsetRulesChecked()"><u>규칙보기</u></p>
-            </div>
-            <basic-rules v-if="!rulesChecked"/>
-            <posts-list :posts="posts"/>
-            <div class="flex-box-end">
-                <button
-                    class="button is-primary general-button"
-                    @click="goToCreatePage()">
-                    <span class="font-awesome-margin-right"><i class="fas fa-pen"/></span>글쓰기
-                </button>
-            </div>
-            <paginationDiv/>
+        <basic-rules v-if="!rulesChecked"/>
+        <posts-list :posts="posts"/>
+        <div class="flex-box-end">
+            <button
+                class="button is-primary general-button"
+                @click="goToCreatePage()">
+                <span class="font-awesome-margin-right"><i class="fas fa-pen"/></span>글쓰기
+            </button>
         </div>
+        <paginationDiv/>
     </div>
 </template>
 
